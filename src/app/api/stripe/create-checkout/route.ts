@@ -22,6 +22,10 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Invalid plan" }, { status: 400 });
     }
 
+    if (!stripe) {
+      return NextResponse.json({ error: "Stripe not configured" }, { status: 500 });
+    }
+
     const checkoutSession = await stripe.checkout.sessions.create({
       customer_email: session.user.email!,
       line_items: [{ price: priceId, quantity: 1 }],
