@@ -55,7 +55,7 @@ export default function NutritionPage() {
                     <div className="flex justify-between text-sm"><span>Carbs</span><span className="font-medium text-yellow-400">{plan.carbs}</span></div>
                     <div className="flex justify-between text-sm"><span>Fats</span><span className="font-medium text-blue-400">{plan.fats}</span></div>
                   </div>
-                  <Link href="/pricing" className="inline-flex items-center gap-1 text-sm font-medium text-emerald-400 hover:text-emerald-300">
+                  <Link href="/membership" className="inline-flex items-center gap-1 text-sm font-medium text-emerald-400 hover:text-emerald-300">
                     Get This Plan <ArrowRight className="h-3 w-3" />
                   </Link>
                 </div>

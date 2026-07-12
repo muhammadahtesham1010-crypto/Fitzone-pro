@@ -125,14 +125,12 @@ export function PricingTable() {
                   ))}
                 </ul>
                 <Link
-                  href="/register"
+                  href={plan.price.month === 0 ? "/register" : "/membership"}
                   className={cn(
                     "flex w-full items-center justify-center rounded-xl py-3 text-sm font-semibold transition-all",
                     plan.highlighted
                       ? "bg-emerald-500 text-white hover:bg-emerald-600 hover:shadow-lg hover:shadow-emerald-500/25"
-                      : plan.price.month === 0
-                        ? "border border-emerald-500/20 hover:bg-emerald-500/10"
-                        : "border border-emerald-500/20 hover:bg-emerald-500/10"
+                      : "border border-emerald-500/20 hover:bg-emerald-500/10"
                   )}
                 >
                   {plan.price.month === 0 ? "Get Started Free" : "Get Started"}

@@ -85,10 +85,10 @@ export function FeaturedPrograms() {
                   </span>
                 </div>
                 <Link
-                  href="/programs"
+                  href="/membership"
                   className="inline-flex items-center gap-1 text-sm font-medium text-emerald-400 transition-colors hover:text-emerald-300"
                 >
-                  Learn More <ArrowRight className="h-3 w-3" />
+                  Start Program <ArrowRight className="h-3 w-3" />
                 </Link>
               </div>
             </motion.div>

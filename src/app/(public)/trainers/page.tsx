@@ -57,7 +57,7 @@ export default function TrainersPage() {
                   ))}
                 </div>
                 <Link
-                  href="/pricing"
+                  href="/membership"
                   className="inline-flex items-center gap-2 rounded-xl bg-emerald-500 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-emerald-600"
                 >
                   <MessageSquare className="h-4 w-4" /> Book Session

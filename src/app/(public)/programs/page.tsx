@@ -91,7 +91,7 @@ export default function ProgramsPage() {
                   <span className="inline-flex items-center gap-1 rounded-full bg-emerald-500/10 px-2.5 py-0.5 text-xs text-emerald-400"><Dumbbell className="h-3 w-3" /> {program.difficulty}</span>
                   <span className="inline-flex items-center gap-1 rounded-full bg-emerald-500/10 px-2.5 py-0.5 text-xs text-emerald-400"><Star className="h-3 w-3" /> {program.rating}</span>
                 </div>
-                <Link href="/pricing" className="inline-flex items-center gap-1 text-sm font-medium text-emerald-400 hover:text-emerald-300">
+                <Link href="/membership" className="inline-flex items-center gap-1 text-sm font-medium text-emerald-400 hover:text-emerald-300">
                   Start Program <ArrowRight className="h-3 w-3" />
                 </Link>
               </div>
