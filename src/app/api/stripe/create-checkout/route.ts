@@ -9,15 +9,20 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const { planId } = await req.json();
+    const { planId, interval = "month" } = await req.json();
 
     const prices: Record<string, string> = {
       basic: process.env.STRIPE_PRICE_BASIC || "",
+      basic_year: process.env.STRIPE_PRICE_BASIC_YEAR || "",
       pro: process.env.STRIPE_PRICE_PRO || "",
+      pro_year: process.env.STRIPE_PRICE_PRO_YEAR || "",
       elite: process.env.STRIPE_PRICE_ELITE || "",
+      elite_year: process.env.STRIPE_PRICE_ELITE_YEAR || "",
     };
 
-    const priceId = prices[planId as string];
+    const key = interval === "year" ? `${planId}_year` : planId;
+    const priceId = prices[key];
+
     if (!priceId) {
       return NextResponse.json({ error: "Invalid plan" }, { status: 400 });
     }
@@ -33,7 +38,7 @@ export async function POST(req: Request) {
       subscription_data: { trial_period_days: 14 },
       success_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/pricing`,
-      metadata: { userId: session.user.id },
+      metadata: { userId: session.user.id, planName: planId, interval },
     });
 
     return NextResponse.json({ url: checkoutSession.url });

@@ -12,7 +12,6 @@ export function WaterIntake() {
 
   const total = glasses * GLASS_ML;
   const target = TARGET_GLASSES * GLASS_ML;
-  const percent = Math.min(100, (total / target) * 100);
 
   return (
     <GlassCard>
@@ -20,7 +19,7 @@ export function WaterIntake() {
         <h3 className="font-semibold flex items-center gap-2">
           <Droplets className="h-4 w-4 text-blue-400" /> Water Intake
         </h3>
-        <button onClick={() => setGlasses((g) => Math.min(g + 1, TARGET_GLASSES))} className="rounded-lg bg-blue-500/10 p-1.5 text-blue-400 hover:bg-blue-500/20">
+        <button onClick={() => setGlasses((g) => Math.min(g + 1, TARGET_GLASSES))} className="rounded-lg bg-blue-500/10 p-2.5 text-blue-400 hover:bg-blue-500/20">
           <Plus className="h-4 w-4" />
         </button>
       </div>

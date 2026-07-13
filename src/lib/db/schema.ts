@@ -8,12 +8,10 @@ import {
   decimal,
   jsonb,
   pgEnum,
-  uniqueIndex,
   index,
   date,
   primaryKey,
 } from "drizzle-orm/pg-core";
-import { relations } from "drizzle-orm";
 
 export const roleEnum = pgEnum("role", ["user", "admin", "trainer"]);
 export const goalEnum = pgEnum("goal", [
@@ -401,6 +399,28 @@ export const favorites = pgTable("favorites", {
     .references(() => users.id, { onDelete: "cascade" }),
   itemType: text("item_type").notNull(),
   itemId: uuid("item_id").notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+// AI Chat – Conversations
+export const conversations = pgTable("conversations", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  userId: uuid("user_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  title: text("title").notNull().default("New Chat"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+// AI Chat – Messages
+export const messages = pgTable("messages", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  conversationId: uuid("conversation_id")
+    .notNull()
+    .references(() => conversations.id, { onDelete: "cascade" }),
+  role: text("role").notNull(), // "user" | "assistant"
+  content: text("content").notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 

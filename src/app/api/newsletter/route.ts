@@ -6,9 +6,9 @@ export async function POST(req: Request) {
   try {
     const { email } = await req.json();
 
-    if (!email) {
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       return NextResponse.json(
-        { message: "Email is required" },
+        { message: "Valid email is required" },
         { status: 400 }
       );
     }

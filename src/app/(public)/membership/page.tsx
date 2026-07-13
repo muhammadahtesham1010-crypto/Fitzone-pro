@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { AnimatedSection } from "@/components/shared/animated-section";
 import { GradientText } from "@/components/shared/gradient-text";
 import { GlassCard } from "@/components/shared/glass-card";
-import { Check, Loader2 } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
@@ -23,7 +23,11 @@ export default function MembershipPage() {
 
   const handleCheckout = async (planId: string) => {
     if (planId === "free") {
-      router.push("/register");
+      if (session) {
+        router.push("/dashboard");
+      } else {
+        router.push("/register");
+      }
       return;
     }
     if (!session) {
@@ -39,7 +43,7 @@ export default function MembershipPage() {
       });
       const data = await res.json();
       if (data.url) {
-        window.location.href = data.url;
+        window.location.assign(data.url);
       } else {
         toast.error("Checkout failed");
       }
@@ -62,12 +66,12 @@ export default function MembershipPage() {
           </p>
         </AnimatedSection>
 
-        <div className="mx-auto grid max-w-5xl gap-6 md:grid-cols-4">
+        <div className="mx-auto grid max-w-5xl gap-6 sm:grid-cols-2 md:grid-cols-4">
           {plans.map((plan) => (
             <GlassCard key={plan.id} hover className="text-center">
               <h3 className="mb-2 text-xl font-bold">{plan.name}</h3>
               <p className="mb-4 text-sm text-muted-foreground">{plan.desc}</p>
-              <p className="mb-6">
+              <div className="mb-6">
                 {plan.price === 0 ? (
                   <span className="text-4xl font-bold">Free</span>
                 ) : (
@@ -83,7 +87,7 @@ export default function MembershipPage() {
                     )}
                   </>
                 )}
-              </p>
+              </div>
               <button
                 onClick={() => handleCheckout(plan.id)}
                 disabled={loading === plan.id}

@@ -5,7 +5,7 @@ import { GlassCard } from "@/components/shared/glass-card";
 import { Scale, Plus } from "lucide-react";
 
 export function WeightTracker() {
-  const [weight, setWeight] = useState(75);
+  const [weight] = useState(75);
 
   return (
     <GlassCard>
@@ -18,8 +18,16 @@ export function WeightTracker() {
         </button>
       </div>
       <p className="text-3xl font-bold">{weight} <span className="text-sm text-muted-foreground">kg</span></p>
-      <div className="mt-4 h-24 flex items-center justify-center rounded-lg bg-emerald-500/5">
-        <p className="text-xs text-muted-foreground">Weight trend chart</p>
+      <div className="mt-4 h-24 flex items-end justify-between gap-1 rounded-lg bg-emerald-500/5 p-3">
+        {[65, 67, 66, 68, 70, 69, 71].map((val, i) => (
+          <div key={i} className="flex-1 flex flex-col items-center gap-1">
+            <div
+              className="w-full rounded-t-sm bg-gradient-to-t from-emerald-500/40 to-emerald-400/60 transition-all hover:from-emerald-500/60 hover:to-emerald-400/80"
+              style={{ height: `${(val / 72) * 100}%` }}
+            />
+            <span className="text-[10px] text-muted-foreground">M{i + 1}</span>
+          </div>
+        ))}
       </div>
     </GlassCard>
   );

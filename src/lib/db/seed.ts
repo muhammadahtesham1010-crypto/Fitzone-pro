@@ -37,7 +37,7 @@ async function seed() {
   });
 
   // Membership Plans
-  const plans = await db
+  await db
     .insert(membershipPlans)
     .values([
       {

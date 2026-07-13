@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Dumbbell, Mail, Phone, MapPin, Globe, MessageCircle, Video, Music } from "lucide-react";
+import { Dumbbell, Mail, Phone, MapPin, Globe, MessageCircle, Video } from "lucide-react";
 import { SITE_CONFIG } from "@/lib/constants";
 
 export function Footer() {
@@ -21,7 +21,7 @@ export function Footer() {
             <p className="mt-4 text-sm text-muted-foreground">
               {SITE_CONFIG.description}
             </p>
-            <div className="mt-6 flex gap-3">
+            <div className="mt-6 flex flex-wrap gap-3">
               <a href={SITE_CONFIG.social.instagram} className="rounded-lg bg-emerald-500/10 p-2 text-emerald-400 transition-colors hover:bg-emerald-500/20">
                 <Globe className="h-4 w-4" />
               </a>

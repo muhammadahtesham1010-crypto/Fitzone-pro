@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Search, Dumbbell, Filter } from "lucide-react";
+import { Filter } from "lucide-react";
 import { AnimatedSection } from "@/components/shared/animated-section";
 import { GradientText } from "@/components/shared/gradient-text";
 import { GlassCard } from "@/components/shared/glass-card";
@@ -60,11 +60,11 @@ export default function WorkoutsPage() {
             <div className="flex items-center gap-2">
               <Filter className="h-4 w-4 text-muted-foreground" />
               {muscles.map((m) => (
-                <button key={m} onClick={() => setMuscle(m)} className={`rounded-full px-3 py-1 text-xs font-medium transition-all ${muscle === m ? "bg-emerald-500 text-white" : "border border-emerald-500/20 text-muted-foreground hover:bg-emerald-500/10"}`}>{m}</button>
+                <button key={m} onClick={() => setMuscle(m)} className={`min-h-[44px] rounded-full px-3 py-1 text-xs font-medium transition-all ${muscle === m ? "bg-emerald-500 text-white" : "border border-emerald-500/20 text-muted-foreground hover:bg-emerald-500/10"}`}>{m}</button>
               ))}
             </div>
             {difficulties.map((d) => (
-              <button key={d} onClick={() => setDifficulty(d)} className={`rounded-full px-3 py-1 text-xs font-medium transition-all ${difficulty === d ? "bg-emerald-500 text-white" : "border border-emerald-500/20 text-muted-foreground hover:bg-emerald-500/10"}`}>{d}</button>
+              <button key={d} onClick={() => setDifficulty(d)} className={`min-h-[44px] rounded-full px-3 py-1 text-xs font-medium transition-all ${difficulty === d ? "bg-emerald-500 text-white" : "border border-emerald-500/20 text-muted-foreground hover:bg-emerald-500/10"}`}>{d}</button>
             ))}
           </div>
         </div>

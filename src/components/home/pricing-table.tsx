@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { Check } from "lucide-react";
 import { AnimatedSection } from "@/components/shared/animated-section";
 import { GradientText } from "@/components/shared/gradient-text";
@@ -46,6 +48,8 @@ const plans = [
 
 export function PricingTable() {
   const [annual, setAnnual] = useState(false);
+  const { data: session } = useSession();
+  const router = useRouter();
 
   return (
     <section className="py-24">
@@ -79,7 +83,7 @@ export function PricingTable() {
           </div>
         </AnimatedSection>
 
-        <div className="grid gap-6 lg:grid-cols-4">
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {plans.map((plan, i) => (
             <AnimatedSection key={plan.name} delay={i * 0.1}>
               <div
@@ -124,17 +128,26 @@ export function PricingTable() {
                     </li>
                   ))}
                 </ul>
-                <Link
-                  href={plan.price.month === 0 ? "/register" : "/membership"}
-                  className={cn(
-                    "flex w-full items-center justify-center rounded-xl py-3 text-sm font-semibold transition-all",
-                    plan.highlighted
-                      ? "bg-emerald-500 text-white hover:bg-emerald-600 hover:shadow-lg hover:shadow-emerald-500/25"
-                      : "border border-emerald-500/20 hover:bg-emerald-500/10"
-                  )}
-                >
-                  {plan.price.month === 0 ? "Get Started Free" : "Get Started"}
-                </Link>
+                {plan.price.month === 0 ? (
+                  <button
+                    onClick={() => session ? router.push("/dashboard") : router.push("/register")}
+                    className="flex w-full items-center justify-center rounded-xl py-3 text-sm font-semibold transition-all border border-emerald-500/20 hover:bg-emerald-500/10"
+                  >
+                    Get Started Free
+                  </button>
+                ) : (
+                  <Link
+                    href="/membership"
+                    className={cn(
+                      "flex w-full items-center justify-center rounded-xl py-3 text-sm font-semibold transition-all",
+                      plan.highlighted
+                        ? "bg-emerald-500 text-white hover:bg-emerald-600 hover:shadow-lg hover:shadow-emerald-500/25"
+                        : "border border-emerald-500/20 hover:bg-emerald-500/10"
+                    )}
+                  >
+                    Get Started
+                  </Link>
+                )}
               </div>
             </AnimatedSection>
           ))}

@@ -3,7 +3,7 @@ import Google from "next-auth/providers/google";
 import Credentials from "next-auth/providers/credentials";
 import { DrizzleAdapter } from "@auth/drizzle-adapter";
 import { db } from "@/lib/db";
-import { accounts, sessions, users, verificationTokens, membershipPlans, subscriptions } from "@/lib/db/schema";
+import { accounts, sessions, users, verificationTokens } from "@/lib/db/schema";
 import bcrypt from "bcryptjs";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
@@ -19,7 +19,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           Google({
             clientId: process.env.AUTH_GOOGLE_ID,
             clientSecret: process.env.AUTH_GOOGLE_SECRET,
-            allowDangerousEmailAccountLinking: true,
+            allowDangerousEmailAccountLinking: false,
           }),
         ]
       : []),

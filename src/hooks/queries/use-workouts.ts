@@ -18,7 +18,7 @@ export function useLogWorkout() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (data: any) => {
+    mutationFn: async (data: Record<string, unknown>) => {
       const res = await fetch("/api/workouts", {
         method: "POST",
         headers: { "Content-Type": "application/json" },

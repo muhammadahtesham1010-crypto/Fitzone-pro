@@ -50,7 +50,7 @@ export function HeroSection() {
                 View Programs
               </Link>
             </div>
-            <div className="mt-12 flex items-center gap-8">
+            <div className="mt-12 flex flex-wrap items-center gap-8">
               {[
                 { value: "50K+", label: "Active Members" },
                 { value: "200+", label: "Programs" },

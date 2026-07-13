@@ -18,9 +18,10 @@ export async function POST(req: Request) {
       { message: "User created", user },
       { status: 201 }
     );
-  } catch (error: any) {
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "Registration failed";
     return NextResponse.json(
-      { message: error.message || "Registration failed" },
+      { message },
       { status: 400 }
     );
   }

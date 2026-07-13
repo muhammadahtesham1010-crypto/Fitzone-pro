@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowRight, Apple, Flame, Wheat, Droplets } from "lucide-react";
+import { ArrowRight, Flame, Wheat, Droplets } from "lucide-react";
 import Link from "next/link";
 import { AnimatedSection } from "@/components/shared/animated-section";
 import { GradientText } from "@/components/shared/gradient-text";

@@ -39,7 +39,7 @@ export default function PricingPage() {
           <h2 className="mb-8 text-center text-2xl font-bold">
             Compare <GradientText>Features</GradientText>
           </h2>
-          <div className="overflow-hidden rounded-2xl border border-emerald-500/10">
+          <div className="overflow-x-auto rounded-2xl border border-emerald-500/10">
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-emerald-500/10 bg-card">

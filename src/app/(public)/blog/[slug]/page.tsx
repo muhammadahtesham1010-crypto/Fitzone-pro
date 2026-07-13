@@ -3,11 +3,10 @@
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import { Calendar, Clock, Tag, ArrowLeft, Share2 } from "lucide-react";
-import { GradientText } from "@/components/shared/gradient-text";
 import { GlassCard } from "@/components/shared/glass-card";
 import { toast } from "sonner";
 
-const posts: Record<string, any> = {
+const posts: Record<string, { title: string; content: string; date: string; readTime: string; category: string; image?: string; author?: string }> = {
   "science-of-muscle-growth": {
     title: "The Science of Muscle Growth",
     content: `Muscle growth, or hypertrophy, occurs when muscle fibers sustain damage or stress from exercise. The body repairs these fibers by fusing them together, increasing muscle mass and size.

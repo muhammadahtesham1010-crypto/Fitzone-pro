@@ -2,7 +2,7 @@
 
 import bcrypt from "bcryptjs";
 import { db } from "@/lib/db";
-import { users, profiles, membershipPlans, subscriptions } from "@/lib/db/schema";
+import { users, profiles, subscriptions } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
 
 export async function registerUser({
@@ -19,6 +19,14 @@ export async function registerUser({
   });
 
   if (existing) {
+    if (!existing.password) {
+      const hashed = await bcrypt.hash(password, 12);
+      await db
+        .update(users)
+        .set({ password: hashed, name: existing.name || name, updatedAt: new Date() })
+        .where(eq(users.id, existing.id));
+      return { id: existing.id, email: existing.email, name: existing.name || name };
+    }
     throw new Error("User already exists with this email");
   }
 
@@ -53,7 +61,7 @@ export async function registerUser({
 
   try {
     if (process.env.RESEND_API_KEY) {
-      const { Resend } = require("resend");
+      const { Resend } = await import("resend");
       const resend = new Resend(process.env.RESEND_API_KEY);
       await resend.emails.send({
         from: "FitZone Pro <noreply@fitzone.app>",

@@ -1,7 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { useInView } from "framer-motion";
+import { motion, useInView, useReducedMotion } from "framer-motion";
 import { useRef } from "react";
 
 interface AnimatedSectionProps {
@@ -19,6 +18,7 @@ export function AnimatedSection({
 }: AnimatedSectionProps) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const prefersReducedMotion = useReducedMotion();
 
   const variants = {
     hidden: {
@@ -36,7 +36,7 @@ export function AnimatedSection({
   return (
     <motion.div
       ref={ref}
-      initial="hidden"
+      initial={prefersReducedMotion ? "visible" : "hidden"}
       animate={isInView ? "visible" : "hidden"}
       variants={variants}
       transition={{ duration: 0.6, delay, ease: "easeOut" }}

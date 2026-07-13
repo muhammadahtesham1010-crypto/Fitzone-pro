@@ -55,16 +55,20 @@ export async function POST(req: Request) {
       }
       case "customer.subscription.updated":
       case "customer.subscription.deleted": {
-        const sub = event.data.object as any;
+        const obj = event.data.object as unknown as Record<string, unknown>;
+        const rawStatus = obj.status as string;
+        const s = rawStatus === "active" || rawStatus === "canceled" || rawStatus === "past_due" || rawStatus === "incomplete" || rawStatus === "trialing"
+          ? rawStatus
+          : "incomplete";
         await db
           .update(subscriptions)
           .set({
-            status: sub.status,
-            currentPeriodEnd: new Date(sub.current_period_end * 1000),
-            cancelAtPeriodEnd: sub.cancel_at_period_end,
+            status: s,
+            currentPeriodEnd: new Date((obj.current_period_end as number) * 1000),
+            cancelAtPeriodEnd: obj.cancel_at_period_end as boolean,
           })
           .where(
-            eq(subscriptions.stripeSubscriptionId!, sub.id)
+            eq(subscriptions.stripeSubscriptionId!, obj.id as string)
           );
         break;
       }

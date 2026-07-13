@@ -13,6 +13,13 @@ export async function POST(req: Request) {
       );
     }
 
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      return NextResponse.json(
+        { message: "Valid email is required" },
+        { status: 400 }
+      );
+    }
+
     await db.insert(contactMessages).values({ name, email, subject, message });
 
     return NextResponse.json(

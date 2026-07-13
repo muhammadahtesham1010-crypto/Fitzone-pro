@@ -4,7 +4,7 @@ import type { NextRequest } from "next/server";
 const publicRoutes = ["/", "/about", "/programs", "/trainers", "/pricing", "/nutrition", "/workouts", "/blog", "/testimonials", "/faq", "/contact"];
 const authRoutes = ["/login", "/register", "/forgot-password"];
 
-export async function proxy(req: NextRequest) {
+export async function middleware(req: NextRequest) {
   const pathname = req.nextUrl.pathname;
 
   const isPublicRoute = publicRoutes.some((r) => pathname === r || pathname.startsWith(r + "/"));

@@ -1,7 +1,5 @@
 "use client";
 
-import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
 import { GlassCard } from "@/components/shared/glass-card";
 import { GradientText } from "@/components/shared/gradient-text";
 import { Users, Dumbbell, CreditCard, DollarSign, TrendingUp, Activity } from "lucide-react";
@@ -14,14 +12,6 @@ const adminStats = [
 ];
 
 export default function AdminDashboardPage() {
-  const { data: session } = useSession();
-  const router = useRouter();
-
-  if (session?.user?.role !== "admin") {
-    router.push("/dashboard");
-    return null;
-  }
-
   return (
     <div className="space-y-6">
       <div>
@@ -51,8 +41,16 @@ export default function AdminDashboardPage() {
           <h3 className="mb-4 font-semibold flex items-center gap-2">
             <TrendingUp className="h-4 w-4 text-emerald-400" /> Revenue Overview
           </h3>
-          <div className="h-64 flex items-center justify-center rounded-xl bg-emerald-500/5">
-            <p className="text-sm text-muted-foreground">Revenue chart will render here</p>
+          <div className="h-64 flex items-end justify-between gap-2 rounded-xl bg-emerald-500/5 p-4">
+            {[35, 48, 42, 56, 61, 53, 72, 68, 74, 81, 78, 88].map((val, i) => (
+              <div key={i} className="flex-1 flex flex-col items-center gap-1">
+                <div
+                  className="w-full rounded-t-sm bg-gradient-to-t from-emerald-500/30 to-emerald-400/50 transition-all hover:from-emerald-500/50 hover:to-emerald-400/70"
+                  style={{ height: `${val}%` }}
+                />
+                <span className="text-[10px] text-muted-foreground">{["J","F","M","A","M","J","J","A","S","O","N","D"][i]}</span>
+              </div>
+            ))}
           </div>
         </GlassCard>
 

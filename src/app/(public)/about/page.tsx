@@ -3,7 +3,7 @@
 import { AnimatedSection } from "@/components/shared/animated-section";
 import { GradientText } from "@/components/shared/gradient-text";
 import { GlassCard } from "@/components/shared/glass-card";
-import { Dumbbell, Users, Target, Heart, Award, Shield } from "lucide-react";
+import { Target, Heart, Award, Shield } from "lucide-react";
 
 const values = [
   { icon: Target, title: "Mission", desc: "Empower every individual to achieve their peak physical and mental potential through innovative fitness solutions." },

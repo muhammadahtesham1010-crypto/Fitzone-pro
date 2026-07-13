@@ -28,8 +28,8 @@ export async function POST(req: Request) {
 
     if (process.env.RESEND_API_KEY) {
       try {
-        const { Resend } = require("resend");
-        const resend = new Resend(process.env.RESEND_API_KEY);
+      const { Resend } = await import("resend");
+      const resend = new Resend(process.env.RESEND_API_KEY);
         await resend.emails.send({
           from: "FitZone Pro <noreply@fitzone.app>",
           to: email,

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronDown, Search } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import { AnimatedSection } from "@/components/shared/animated-section";
 import { GradientText } from "@/components/shared/gradient-text";
 import { SearchInput } from "@/components/shared/search-input";
@@ -58,7 +58,7 @@ export default function FAQPage() {
 
         <div className="space-y-3">
           {filtered.map((faq, i) => (
-            <div key={i} className="rounded-xl border border-emerald-500/10 bg-card overflow-hidden">
+            <div key={faq.q} className="rounded-xl border border-emerald-500/10 bg-card overflow-hidden">
               <button
                 onClick={() => setOpenIndex(openIndex === i ? null : i)}
                 className="flex w-full items-center justify-between p-4 text-left transition-colors hover:bg-emerald-500/5"

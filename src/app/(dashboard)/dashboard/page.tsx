@@ -3,7 +3,6 @@
 import { Dumbbell, Flame, Trophy, Calendar, Apple, ChartNoAxesCombined, User } from "lucide-react";
 import Link from "next/link";
 import { GlassCard } from "@/components/shared/glass-card";
-import { GradientText } from "@/components/shared/gradient-text";
 
 const stats = [
   { label: "Total Workouts", value: "47", icon: Dumbbell, change: "+12 this month", color: "text-emerald-400" },

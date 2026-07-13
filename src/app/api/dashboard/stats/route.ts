@@ -1,17 +1,16 @@
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
-import { workoutLogs, weightLogs, achievements } from "@/lib/db/schema";
+import { workoutLogs, weightLogs, userAchievements } from "@/lib/db/schema";
 import { auth } from "@/lib/auth";
 import { eq, count, gte, and } from "drizzle-orm";
 
-export async function GET(req: Request) {
+export async function GET() {
   try {
     const session = await auth();
     if (!session?.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
-    const { searchParams } = new URL(req.url);
-    const userId = searchParams.get("userId") || session.user.id;
+    const userId = session.user.id;
 
     const today = new Date();
     const firstOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
@@ -36,7 +35,8 @@ export async function GET(req: Request) {
 
     const achievementCount = await db
       .select({ count: count() })
-      .from(achievements)
+      .from(userAchievements)
+      .where(eq(userAchievements.userId, userId))
       .then((r) => r[0]?.count || 0);
 
     return NextResponse.json({

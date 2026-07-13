@@ -1,4 +1,4 @@
-import type { users, profiles, membershipPlans, subscriptions, trainers, programs, exercises, workoutLogs, nutritionPlans, nutritionLogs, weightLogs, waterIntake, stepLogs, blogPosts, testimonials, contactMessages, faqItems, achievements, userAchievements, notifications, newsletterSubscribers, favorites, payments } from "@/lib/db/schema";
+import type { users, profiles, membershipPlans, subscriptions, trainers, programs, exercises, workoutLogs, nutritionPlans, nutritionLogs, weightLogs, waterIntake, stepLogs, blogPosts, testimonials, contactMessages, faqItems, achievements, userAchievements, notifications, favorites, payments } from "@/lib/db/schema";
 import type { InferSelectModel } from "drizzle-orm";
 
 export type User = InferSelectModel<typeof users>;

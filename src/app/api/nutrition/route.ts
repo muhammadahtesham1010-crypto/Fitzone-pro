@@ -2,7 +2,6 @@ import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { nutritionLogs } from "@/lib/db/schema";
 import { auth } from "@/lib/auth";
-import { eq, desc } from "drizzle-orm";
 
 export async function GET(req: Request) {
   try {
@@ -11,14 +10,13 @@ export async function GET(req: Request) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
     const { searchParams } = new URL(req.url);
-    const userId = searchParams.get("userId") || session.user.id;
+    const userId = session.user.id;
     const date = searchParams.get("date");
-    const where = date
-      ? (nl: any, { eq }: any) => eq(nl.userId, userId) && eq(nl.date, date)
-      : (nl: any, { eq }: any) => eq(nl.userId, userId);
     const data = await db.query.nutritionLogs.findMany({
-      where,
-      orderBy: (nl: any, { desc }: any) => [desc(nl.createdAt)],
+      where: date
+        ? (nl, { eq, and }) => and(eq(nl.userId, userId), eq(nl.date, date))
+        : (nl, { eq }) => eq(nl.userId, userId),
+      orderBy: (nl, { desc }) => [desc(nl.createdAt)],
     });
     return NextResponse.json(data);
   } catch (error) {

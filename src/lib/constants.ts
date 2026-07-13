@@ -31,7 +31,9 @@ export const DASHBOARD_LINKS = [
   { href: "/dashboard/progress", label: "Progress", icon: "TrendingUp" },
   { href: "/dashboard/workouts", label: "Workouts", icon: "Dumbbell" },
   { href: "/dashboard/nutrition", label: "Nutrition", icon: "Apple" },
+  { href: "/dashboard/chat", label: "AI Chat", icon: "MessageCircle" },
   { href: "/dashboard/profile", label: "Profile", icon: "User" },
+  { href: "/dashboard/billing", label: "Billing", icon: "CreditCard" },
   { href: "/dashboard/settings", label: "Settings", icon: "Settings" },
 ] as const;
 

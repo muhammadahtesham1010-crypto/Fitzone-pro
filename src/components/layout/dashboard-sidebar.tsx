@@ -8,6 +8,7 @@ import {
   TrendingUp,
   Dumbbell,
   Apple,
+  MessageCircle,
   User,
   Settings,
   Users,
@@ -32,6 +33,7 @@ const iconMap: Record<string, React.ReactNode> = {
   TrendingUp: <TrendingUp className="h-4 w-4" />,
   Dumbbell: <Dumbbell className="h-4 w-4" />,
   Apple: <Apple className="h-4 w-4" />,
+  MessageCircle: <MessageCircle className="h-4 w-4" />,
   User: <User className="h-4 w-4" />,
   Settings: <Settings className="h-4 w-4" />,
   Users: <Users className="h-4 w-4" />,
@@ -103,9 +105,12 @@ export function DashboardSidebar({ open, onClose }: DashboardSidebarProps) {
         </nav>
 
         <div className="border-t border-emerald-500/10 p-4">
-          <Link href="/" className="text-xs text-muted-foreground hover:text-emerald-400">
-            &larr; Back to site
-          </Link>
+          <div className="flex items-center justify-between">
+            <span className="text-xs text-muted-foreground">Plan</span>
+            <span className="rounded-full bg-emerald-500/10 px-2.5 py-0.5 text-xs font-medium text-emerald-400">
+              {session?.user?.subscriptionPlan || "Free"}
+            </span>
+          </div>
         </div>
       </aside>
     </>

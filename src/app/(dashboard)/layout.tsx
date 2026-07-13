@@ -5,14 +5,15 @@ import { useSession } from "next-auth/react";
 import { useRouter, usePathname } from "next/navigation";
 import { DashboardSidebar } from "@/components/layout/dashboard-sidebar";
 import { DashboardHeader } from "@/components/layout/dashboard-header";
-import { AdBanner } from "@/components/shared/ad-banner";
 
 const pageTitles: Record<string, string> = {
   "/dashboard": "Overview",
   "/dashboard/progress": "Progress Tracking",
   "/dashboard/workouts": "Workouts",
   "/dashboard/nutrition": "Nutrition",
+  "/dashboard/chat": "AI Chat",
   "/dashboard/profile": "Profile",
+  "/dashboard/billing": "Billing",
   "/dashboard/settings": "Settings",
   "/admin": "Admin Dashboard",
   "/admin/users": "Manage Users",
@@ -57,12 +58,11 @@ export default function DashboardLayout({
   const title = pageTitles[pathname] || "Dashboard";
 
   return (
-    <div className="flex min-h-[calc(100vh-4rem)]">
+    <div className="flex h-[calc(100vh-4rem)]">
       <DashboardSidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
       <div className="flex flex-1 flex-col">
         <DashboardHeader onMenuClick={() => setSidebarOpen(true)} title={title} />
-        <AdBanner variant="banner" className="mx-6 mt-4" />
-        <main className="flex-1 p-6">{children}</main>
+        <main className="flex-1 overflow-y-auto p-6">{children}</main>
       </div>
     </div>
   );

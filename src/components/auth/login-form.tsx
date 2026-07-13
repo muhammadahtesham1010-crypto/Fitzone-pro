@@ -51,13 +51,13 @@ export function LoginForm() {
     }
   };
 
-  const googleEnabled = !!(typeof window !== "undefined" ? (window as any).__GOOGLE_ENABLED : process.env.NEXT_PUBLIC_GOOGLE_ENABLED === "true");
+  const googleEnabled = process.env.NEXT_PUBLIC_GOOGLE_ENABLED === "true";
 
   const handleGoogleSignIn = async () => {
     try {
       await signIn("google", { callbackUrl: "/dashboard" });
     } catch {
-      toast.error("Google sign-in is not configured yet. Sign in with email instead.");
+      toast.error("Google sign-in failed. Sign in with email instead.");
     }
   };
 

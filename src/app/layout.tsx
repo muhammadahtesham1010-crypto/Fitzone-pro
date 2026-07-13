@@ -5,9 +5,12 @@ import { ThemeProvider } from "@/components/providers/theme-provider";
 import { QueryProvider } from "@/components/providers/query-provider";
 import { SessionProvider } from "@/components/providers/session-provider";
 import { Navbar } from "@/components/layout/navbar";
-import { Footer } from "@/components/layout/footer";
+import { FooterWrapper } from "@/components/layout/footer-wrapper";
 import { Toaster } from "sonner";
 import { SITE_CONFIG } from "@/lib/constants";
+import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
+import { extractRouterConfig } from "uploadthing/server";
+import { ourFileRouter } from "@/lib/uploadthing";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -48,13 +51,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={inter.className}>
+      <body className={`${inter.className} overflow-x-hidden`}>
+        <NextSSRPlugin routerConfig={extractRouterConfig(ourFileRouter)} />
         <SessionProvider>
           <QueryProvider>
             <ThemeProvider>
               <Navbar />
               <main className="min-h-screen pt-16">{children}</main>
-              <Footer />
+              <FooterWrapper />
               <Toaster
                 position="top-center"
                 toastOptions={{

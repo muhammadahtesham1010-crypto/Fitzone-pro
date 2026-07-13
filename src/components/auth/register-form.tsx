@@ -1,9 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
@@ -11,9 +11,17 @@ import { registerSchema, type RegisterInput } from "@/lib/validations/auth";
 import { toast } from "sonner";
 
 export function RegisterForm() {
+  const { data: session, status } = useSession();
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+
+  useEffect(() => {
+    if (status === "loading") return;
+    if (session) {
+      router.push("/dashboard");
+    }
+  }, [session, status, router]);
 
   const {
     register,
@@ -72,13 +80,13 @@ export function RegisterForm() {
     }
   };
 
-  const googleEnabled = !!(typeof window !== "undefined" ? (window as any).__GOOGLE_ENABLED : process.env.NEXT_PUBLIC_GOOGLE_ENABLED === "true");
+  const googleEnabled = process.env.NEXT_PUBLIC_GOOGLE_ENABLED === "true";
 
   const handleGoogleSignIn = async () => {
     try {
       await signIn("google", { callbackUrl: "/dashboard" });
     } catch {
-      toast.error("Google sign-in is not configured yet. Register with email instead.");
+      toast.error("Google sign-in failed. Register with email instead.");
     }
   };
 

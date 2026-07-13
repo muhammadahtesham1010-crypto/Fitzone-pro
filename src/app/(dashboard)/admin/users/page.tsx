@@ -22,9 +22,9 @@ export default function AdminUsersPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <h2 className="text-2xl font-bold">Manage Users</h2>
-        <SearchInput placeholder="Search users..." value={search} onChange={setSearch} className="w-72" />
+        <SearchInput placeholder="Search users..." value={search} onChange={setSearch} className="w-full sm:w-72" />
       </div>
 
       <GlassCard className="p-0 overflow-hidden">

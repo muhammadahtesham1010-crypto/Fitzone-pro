@@ -1,13 +1,30 @@
 "use client";
 
+import { useState } from "react";
 import { useTheme } from "next-themes";
 import { GlassCard } from "@/components/shared/glass-card";
 import { GradientText } from "@/components/shared/gradient-text";
 import { AnimatedSection } from "@/components/shared/animated-section";
-import { Sun, Moon, Monitor, Bell, Shield, Trash2 } from "lucide-react";
+import { Sun, Moon, Monitor, Bell, Trash2 } from "lucide-react";
+import { toast } from "sonner";
 
 export default function SettingsPage() {
   const { theme, setTheme } = useTheme();
+  const [notifications, setNotifications] = useState<Record<string, boolean>>({
+    "Workout reminders": true,
+    "Nutrition reminders": true,
+    "Achievement alerts": true,
+    Newsletter: false,
+  });
+
+  const toggleNotification = (key: string) => {
+    setNotifications((prev) => ({ ...prev, [key]: !prev[key] }));
+    toast.success("Notification preferences updated");
+  };
+
+  const handleDeleteAccount = () => {
+    toast.error("Account deletion is not available yet");
+  };
 
   return (
     <div className="space-y-6 max-w-2xl">
@@ -47,10 +64,15 @@ export default function SettingsPage() {
           <Bell className="h-4 w-4 text-emerald-400" /> Notifications
         </h3>
         <div className="space-y-3">
-          {["Workout reminders", "Nutrition reminders", "Achievement alerts", "Newsletter"].map((item) => (
-            <label key={item} className="flex items-center justify-between rounded-lg bg-emerald-500/5 p-3">
-              <span className="text-sm">{item}</span>
-              <input type="checkbox" defaultChecked className="h-4 w-4 rounded border-emerald-500/20 text-emerald-500 focus:ring-emerald-500" />
+          {Object.entries(notifications).map(([key, value]) => (
+            <label key={key} className="flex items-center justify-between rounded-lg bg-emerald-500/5 p-3">
+              <span className="text-sm">{key}</span>
+              <input
+                type="checkbox"
+                checked={value}
+                onChange={() => toggleNotification(key)}
+                className="h-4 w-4 rounded border-emerald-500/20 text-emerald-500 focus:ring-emerald-500"
+              />
             </label>
           ))}
         </div>
@@ -61,7 +83,7 @@ export default function SettingsPage() {
           <Trash2 className="h-4 w-4" /> Danger Zone
         </h3>
         <p className="mb-4 text-sm text-muted-foreground">Permanently delete your account and all associated data.</p>
-        <button className="rounded-xl border border-red-500/20 px-6 py-2.5 text-sm font-medium text-red-400 transition-colors hover:bg-red-500/10">
+        <button onClick={handleDeleteAccount} className="rounded-xl border border-red-500/20 px-6 py-2.5 text-sm font-medium text-red-400 transition-colors hover:bg-red-500/10">
           Delete Account
         </button>
       </GlassCard>

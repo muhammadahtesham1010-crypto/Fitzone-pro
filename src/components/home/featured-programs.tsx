@@ -8,6 +8,7 @@ import { GradientText } from "@/components/shared/gradient-text";
 
 const programs = [
   {
+    slug: "beginner-strength-foundations",
     title: "Beginner Strength",
     description: "Perfect for newcomers. Build foundational strength with proper form.",
     icon: "🏋️",
@@ -17,6 +18,7 @@ const programs = [
     color: "from-emerald-500/20 to-emerald-600/10",
   },
   {
+    slug: "fat-burning-hiit",
     title: "HIIT Fat Burner",
     description: "High intensity intervals for maximum calorie burn and fat loss.",
     icon: "🔥",
@@ -26,6 +28,7 @@ const programs = [
     color: "from-orange-500/20 to-red-600/10",
   },
   {
+    slug: "muscle-building-101",
     title: "Muscle Builder",
     description: "Science-based hypertrophy program for serious muscle growth.",
     icon: "💪",
@@ -35,6 +38,7 @@ const programs = [
     color: "from-blue-500/20 to-purple-600/10",
   },
   {
+    slug: "yoga-for-flexibility",
     title: "Yoga Flow",
     description: "Improve flexibility, balance, and mental wellbeing.",
     icon: "🧘",
@@ -85,7 +89,7 @@ export function FeaturedPrograms() {
                   </span>
                 </div>
                 <Link
-                  href="/membership"
+                  href={`/programs/${program.slug}`}
                   className="inline-flex items-center gap-1 text-sm font-medium text-emerald-400 transition-colors hover:text-emerald-300"
                 >
                   Start Program <ArrowRight className="h-3 w-3" />
