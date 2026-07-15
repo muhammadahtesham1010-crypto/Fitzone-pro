@@ -179,7 +179,7 @@ export default function ProgramDetailPage() {
                       <div key={dayIdx}>
                         <h4 className="mb-2 text-sm font-semibold text-emerald-400">{day.day}</h4>
                         <div className="overflow-x-auto rounded-lg border border-emerald-500/10">
-                          <table className="w-full text-left text-sm">
+                          <table className="w-full text-left text-sm min-w-[500px]">
                             <thead>
                               <tr className="border-b border-emerald-500/10 bg-emerald-500/5">
                                 <th className="px-3 py-2 font-medium text-muted-foreground">Exercise</th>

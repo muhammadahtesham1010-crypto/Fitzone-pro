@@ -95,17 +95,17 @@ export default function BillingPage() {
       </AnimatedSection>
 
       <GlassCard>
-        <div className="mb-6 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="rounded-xl bg-emerald-500/10 p-3">
+        <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex items-center gap-3 min-w-0">
+            <div className="rounded-xl bg-emerald-500/10 p-3 shrink-0">
               <CreditCard className="h-6 w-6 text-emerald-400" />
             </div>
-            <div>
+            <div className="min-w-0">
               <h3 className="text-lg font-semibold">Current Plan</h3>
-              <p className="text-sm text-muted-foreground">{session?.user?.email}</p>
+              <p className="truncate text-sm text-muted-foreground">{session?.user?.email}</p>
             </div>
           </div>
-          <span className={`rounded-full px-3 py-1 text-xs font-semibold ${planColors[planName] || "bg-muted/10 text-muted-foreground"}`}>
+          <span className={`self-start rounded-full px-3 py-1 text-xs font-semibold ${planColors[planName] || "bg-muted/10 text-muted-foreground"}`}>
             {planName}
           </span>
         </div>

@@ -31,7 +31,7 @@ export function Pagination({
   }
 
   return (
-    <nav className="flex items-center justify-center gap-1">
+    <nav className="flex items-center justify-center gap-1 overflow-x-auto">
       <button
         onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage === 1}

@@ -103,12 +103,12 @@ export default function WorkoutsPage() {
   return (
     <div className="space-y-6">
       <AnimatedSection>
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <h2 className="text-2xl font-bold">Workout <GradientText>Logs</GradientText></h2>
             <p className="text-muted-foreground">Track and manage your workouts.</p>
           </div>
-          <button onClick={() => setShowForm(!showForm)} className="inline-flex items-center gap-2 rounded-xl bg-emerald-500 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-600">
+          <button onClick={() => setShowForm(!showForm)} className="self-start inline-flex items-center gap-2 rounded-xl bg-emerald-500 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-600">
             {showForm ? <X className="h-4 w-4" /> : <Plus className="h-4 w-4" />}
             {showForm ? "Cancel" : "Log Workout"}
           </button>
@@ -136,10 +136,10 @@ export default function WorkoutsPage() {
               </div>
               <div className="space-y-2">
                 {sets.map((s, i) => (
-                  <div key={i} className="flex items-center gap-2">
-                    <span className="w-10 text-sm text-muted-foreground">Set {s.set}</span>
+                  <div key={i} className="grid grid-cols-[2.5rem_1fr_1fr_2rem] gap-2 items-center">
+                    <span className="text-sm text-muted-foreground">Set {s.set}</span>
                     <input type="number" value={s.reps} onChange={(e) => updateSet(i, "reps", e.target.value)} className="w-full rounded-xl border border-emerald-500/20 bg-white/5 px-3 py-2 text-sm focus:border-emerald-500/40 focus:outline-none" placeholder="Reps" />
-                    <input type="number" value={s.weight} onChange={(e) => updateSet(i, "weight", e.target.value)} className="w-full rounded-xl border border-emerald-500/20 bg-white/5 px-3 py-2 text-sm focus:border-emerald-500/40 focus:outline-none" placeholder="Weight (kg)" />
+                    <input type="number" value={s.weight} onChange={(e) => updateSet(i, "weight", e.target.value)} className="w-full rounded-xl border border-emerald-500/20 bg-white/5 px-3 py-2 text-sm focus:border-emerald-500/40 focus:outline-none" placeholder="Wt (kg)" />
                     {sets.length > 1 && (
                       <button onClick={() => removeSet(i)} className="rounded-lg p-1.5 text-red-400 hover:bg-red-500/10">
                         <Minus className="h-4 w-4" />

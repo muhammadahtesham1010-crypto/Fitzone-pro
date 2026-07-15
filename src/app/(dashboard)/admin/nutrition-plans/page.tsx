@@ -12,9 +12,9 @@ const plans = [
 export default function AdminNutritionPlansPage() {
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <h2 className="text-2xl font-bold">Manage Nutrition Plans</h2>
-        <button className="inline-flex items-center gap-2 rounded-xl bg-emerald-500 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-600">
+        <button className="self-start inline-flex items-center gap-2 rounded-xl bg-emerald-500 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-600">
           <Plus className="h-4 w-4" /> Add Plan
         </button>
       </div>

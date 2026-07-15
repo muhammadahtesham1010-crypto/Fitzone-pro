@@ -69,7 +69,7 @@ export default function UserDashboardPage() {
           <div className="mb-4 flex items-center justify-between">
             <h3 className="font-semibold">Quick Actions</h3>
           </div>
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {[
                 { href: "/dashboard/workouts", label: "Log Workout", icon: Dumbbell },
                 { href: "/dashboard/nutrition", label: "Track Meal", icon: Apple },

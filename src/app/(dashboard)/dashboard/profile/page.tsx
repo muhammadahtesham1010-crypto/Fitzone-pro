@@ -270,7 +270,7 @@ export default function ProfilePage() {
             </div>
           </div>
 
-          <div className="flex gap-3 pt-2">
+          <div className="flex flex-col gap-3 sm:flex-row pt-2">
             <button
               type="submit"
               disabled={isLoading}

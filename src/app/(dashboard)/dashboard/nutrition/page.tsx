@@ -95,12 +95,12 @@ export default function NutritionPage() {
   return (
     <div className="space-y-6">
       <AnimatedSection>
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <h2 className="text-2xl font-bold">Nutrition <GradientText>Tracking</GradientText></h2>
             <p className="text-muted-foreground">Track your daily nutrition and macros.</p>
           </div>
-          <button onClick={() => setShowForm(!showForm)} className="inline-flex items-center gap-2 rounded-xl bg-emerald-500 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-600">
+          <button onClick={() => setShowForm(!showForm)} className="inline-flex items-center gap-2 self-start rounded-xl bg-emerald-500 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-600">
             {showForm ? <X className="h-4 w-4" /> : <Plus className="h-4 w-4" />}
             {showForm ? "Cancel" : "Log Meal"}
           </button>
