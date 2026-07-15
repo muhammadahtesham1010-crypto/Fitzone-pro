@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { GlassCard } from "@/components/shared/glass-card";
 import { GradientText } from "@/components/shared/gradient-text";
 import { AnimatedSection } from "@/components/shared/animated-section";
-import { Apple, Plus, X, Loader2 } from "lucide-react";
+import { Apple, Plus, X, Loader2, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 
 interface NutritionLog {
@@ -74,6 +74,15 @@ export default function NutritionPage() {
     { calories: 0, protein: 0, carbs: 0, fats: 0 }
   );
 
+  const handleDelete = async (id: string) => {
+    try {
+      const res = await fetch(`/api/nutrition/${id}`, { method: "DELETE" });
+      if (!res.ok) throw new Error("Failed to delete meal");
+      setLogs((prev) => prev.filter((l) => l.id !== id));
+      toast.success("Meal deleted");
+    } catch { toast.error("Failed to delete meal"); }
+  };
+
   const targets = { calories: 2500, protein: 180, carbs: 250, fats: 70 };
 
   const macros = [
@@ -91,8 +100,9 @@ export default function NutritionPage() {
             <h2 className="text-2xl font-bold">Nutrition <GradientText>Tracking</GradientText></h2>
             <p className="text-muted-foreground">Track your daily nutrition and macros.</p>
           </div>
-          <button onClick={() => setShowForm(true)} className="inline-flex items-center gap-2 rounded-xl bg-emerald-500 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-600">
-            <Plus className="h-4 w-4" /> Log Meal
+          <button onClick={() => setShowForm(!showForm)} className="inline-flex items-center gap-2 rounded-xl bg-emerald-500 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-600">
+            {showForm ? <X className="h-4 w-4" /> : <Plus className="h-4 w-4" />}
+            {showForm ? "Cancel" : "Log Meal"}
           </button>
         </div>
       </AnimatedSection>
@@ -181,9 +191,14 @@ export default function NutritionPage() {
                       <p className="text-sm font-medium">{log.foodName}</p>
                       <p className="text-xs text-muted-foreground capitalize">{log.mealType}</p>
                     </div>
-                    <div className="text-right text-sm">
-                      <p>{log.calories} cal</p>
-                      <p className="text-xs text-muted-foreground">P:{log.proteinG} C:{log.carbsG} F:{log.fatsG}</p>
+                    <div className="flex items-center gap-3">
+                      <div className="text-right text-sm">
+                        <p>{log.calories} cal</p>
+                        <p className="text-xs text-muted-foreground">P:{log.proteinG} C:{log.carbsG} F:{log.fatsG}</p>
+                      </div>
+                      <button onClick={() => handleDelete(log.id)} className="rounded-lg p-1.5 text-red-400 hover:bg-red-500/10">
+                        <Trash2 className="h-4 w-4" />
+                      </button>
                     </div>
                   </div>
                 ))}

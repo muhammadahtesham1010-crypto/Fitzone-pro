@@ -4,13 +4,20 @@ import { useState, useEffect } from "react";
 import { GlassCard } from "@/components/shared/glass-card";
 import { GradientText } from "@/components/shared/gradient-text";
 import { AnimatedSection } from "@/components/shared/animated-section";
-import { Dumbbell, Plus, X, Loader2, Clock } from "lucide-react";
+import { Dumbbell, Plus, Minus, X, Loader2, Clock, Trash2 } from "lucide-react";
 import { toast } from "sonner";
+
+interface WorkoutSet {
+  set: number;
+  reps: string;
+  weight: string;
+}
 
 interface WorkoutLog {
   id: string;
   date: string;
   exerciseId: string | null;
+  exerciseName: string | null;
   sets: { set: number; reps: number; weight: number }[];
   notes: string | null;
   durationMinutes: number | null;
@@ -22,7 +29,10 @@ export default function WorkoutsPage() {
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [submitting, setSubmitting] = useState(false);
-  const [form, setForm] = useState({ exercise: "", sets: "3", reps: "10", weight: "", duration: "", notes: "" });
+  const [exercise, setExercise] = useState("");
+  const [duration, setDuration] = useState("");
+  const [notes, setNotes] = useState("");
+  const [sets, setSets] = useState<WorkoutSet[]>([{ set: 1, reps: "10", weight: "" }]);
 
   const fetchWorkouts = async () => {
     try {
@@ -35,19 +45,39 @@ export default function WorkoutsPage() {
   };
 
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchWorkouts();
   }, []);
 
+  const addSet = () => {
+    setSets((prev) => [...prev, { set: prev.length + 1, reps: "10", weight: "" }]);
+  };
+
+  const removeSet = (index: number) => {
+    if (sets.length <= 1) return;
+    setSets((prev) => prev.filter((_, i) => i !== index).map((s, i) => ({ ...s, set: i + 1 })));
+  };
+
+  const updateSet = (index: number, field: "reps" | "weight", value: string) => {
+    setSets((prev) => prev.map((s, i) => (i === index ? { ...s, [field]: value } : s)));
+  };
+
+  const resetForm = () => {
+    setShowForm(false);
+    setExercise("");
+    setDuration("");
+    setNotes("");
+    setSets([{ set: 1, reps: "10", weight: "" }]);
+  };
+
   const handleSubmit = async () => {
-    if (!form.exercise.trim()) { toast.error("Exercise name is required"); return; }
-    const duration = parseInt(form.duration) || undefined;
+    if (!exercise.trim()) { toast.error("Exercise name is required"); return; }
     setSubmitting(true);
     try {
       const body = {
-        exerciseId: form.exercise.trim(),
-        notes: form.notes || undefined,
-        durationMinutes: duration,
+        exerciseName: exercise.trim(),
+        sets: sets.map((s) => ({ set: s.set, reps: parseInt(s.reps) || 0, weight: parseInt(s.weight) || 0 })),
+        durationMinutes: parseInt(duration) || undefined,
+        notes: notes || undefined,
       };
       const res = await fetch("/api/workouts", {
         method: "POST",
@@ -56,10 +86,18 @@ export default function WorkoutsPage() {
       });
       if (!res.ok) throw new Error("Failed to log workout");
       toast.success("Workout logged!");
-      setShowForm(false);
-      setForm({ exercise: "", sets: "3", reps: "10", weight: "", duration: "", notes: "" });
+      resetForm();
       fetchWorkouts();
     } catch { toast.error("Failed to log workout"); } finally { setSubmitting(false); }
+  };
+
+  const handleDelete = async (id: string) => {
+    try {
+      const res = await fetch(`/api/workouts/${id}`, { method: "DELETE" });
+      if (!res.ok) throw new Error("Failed to delete workout");
+      setWorkouts((prev) => prev.filter((w) => w.id !== id));
+      toast.success("Workout deleted");
+    } catch { toast.error("Failed to delete workout"); }
   };
 
   return (
@@ -70,8 +108,9 @@ export default function WorkoutsPage() {
             <h2 className="text-2xl font-bold">Workout <GradientText>Logs</GradientText></h2>
             <p className="text-muted-foreground">Track and manage your workouts.</p>
           </div>
-          <button onClick={() => setShowForm(true)} className="inline-flex items-center gap-2 rounded-xl bg-emerald-500 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-600">
-            <Plus className="h-4 w-4" /> Log Workout
+          <button onClick={() => setShowForm(!showForm)} className="inline-flex items-center gap-2 rounded-xl bg-emerald-500 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-600">
+            {showForm ? <X className="h-4 w-4" /> : <Plus className="h-4 w-4" />}
+            {showForm ? "Cancel" : "Log Workout"}
           </button>
         </div>
       </AnimatedSection>
@@ -80,20 +119,44 @@ export default function WorkoutsPage() {
         <GlassCard>
           <div className="flex items-center justify-between mb-4">
             <h3 className="font-semibold">Log Workout</h3>
-            <button onClick={() => setShowForm(false)} className="rounded-lg p-1 text-muted-foreground hover:bg-emerald-500/10"><X className="h-4 w-4" /></button>
+            <button onClick={resetForm} className="rounded-lg p-1 text-muted-foreground hover:bg-emerald-500/10"><X className="h-4 w-4" /></button>
           </div>
           <div className="space-y-3">
             <div>
               <label className="block text-sm font-medium mb-1">Exercise</label>
-              <input value={form.exercise} onChange={(e) => setForm({ ...form, exercise: e.target.value })} className="w-full rounded-xl border border-emerald-500/20 bg-white/5 px-4 py-2 text-sm focus:border-emerald-500/40 focus:outline-none" placeholder="e.g. Bench Press" />
+              <input value={exercise} onChange={(e) => setExercise(e.target.value)} className="w-full rounded-xl border border-emerald-500/20 bg-white/5 px-4 py-2 text-sm focus:border-emerald-500/40 focus:outline-none" placeholder="e.g. Bench Press" />
             </div>
+
+            <div>
+              <div className="flex items-center justify-between mb-2">
+                <label className="text-sm font-medium">Sets</label>
+                <button onClick={addSet} className="inline-flex items-center gap-1 rounded-lg bg-emerald-500/10 px-2.5 py-1 text-xs font-medium text-emerald-400 hover:bg-emerald-500/20">
+                  <Plus className="h-3 w-3" /> Add Set
+                </button>
+              </div>
+              <div className="space-y-2">
+                {sets.map((s, i) => (
+                  <div key={i} className="flex items-center gap-2">
+                    <span className="w-10 text-sm text-muted-foreground">Set {s.set}</span>
+                    <input type="number" value={s.reps} onChange={(e) => updateSet(i, "reps", e.target.value)} className="w-full rounded-xl border border-emerald-500/20 bg-white/5 px-3 py-2 text-sm focus:border-emerald-500/40 focus:outline-none" placeholder="Reps" />
+                    <input type="number" value={s.weight} onChange={(e) => updateSet(i, "weight", e.target.value)} className="w-full rounded-xl border border-emerald-500/20 bg-white/5 px-3 py-2 text-sm focus:border-emerald-500/40 focus:outline-none" placeholder="Weight (kg)" />
+                    {sets.length > 1 && (
+                      <button onClick={() => removeSet(i)} className="rounded-lg p-1.5 text-red-400 hover:bg-red-500/10">
+                        <Minus className="h-4 w-4" />
+                      </button>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+
             <div>
               <label className="block text-sm font-medium mb-1">Duration (minutes, optional)</label>
-              <input type="number" value={form.duration} onChange={(e) => setForm({ ...form, duration: e.target.value })} className="w-full rounded-xl border border-emerald-500/20 bg-white/5 px-4 py-2 text-sm focus:border-emerald-500/40 focus:outline-none" placeholder="45" />
+              <input type="number" value={duration} onChange={(e) => setDuration(e.target.value)} className="w-full rounded-xl border border-emerald-500/20 bg-white/5 px-4 py-2 text-sm focus:border-emerald-500/40 focus:outline-none" placeholder="45" />
             </div>
             <div>
               <label className="block text-sm font-medium mb-1">Notes (optional)</label>
-              <textarea value={form.notes} onChange={(e) => setForm({ ...form, notes: e.target.value })} className="w-full rounded-xl border border-emerald-500/20 bg-white/5 px-4 py-2 text-sm focus:border-emerald-500/40 focus:outline-none" rows={2} placeholder="How did it feel?" />
+              <textarea value={notes} onChange={(e) => setNotes(e.target.value)} className="w-full rounded-xl border border-emerald-500/20 bg-white/5 px-4 py-2 text-sm focus:border-emerald-500/40 focus:outline-none" rows={2} placeholder="How did it feel?" />
             </div>
             <button onClick={handleSubmit} disabled={submitting} className="flex w-full items-center justify-center gap-2 rounded-xl bg-emerald-500 px-4 py-2.5 text-sm font-medium text-white hover:bg-emerald-600 disabled:opacity-50">
               {submitting && <Loader2 className="h-4 w-4 animate-spin" />}
@@ -123,8 +186,13 @@ export default function WorkoutsPage() {
           {workouts.map((w) => (
             <GlassCard key={w.id}>
               <div className="flex items-start justify-between">
-                <div>
-                  <h3 className="font-semibold">{w.exerciseId || "Workout"}</h3>
+                <div className="flex-1">
+                  <div className="flex items-center justify-between">
+                    <h3 className="font-semibold">{w.exerciseName || w.exerciseId || "Workout"}</h3>
+                    <button onClick={() => handleDelete(w.id)} className="rounded-lg p-1.5 text-red-400 hover:bg-red-500/10">
+                      <Trash2 className="h-4 w-4" />
+                    </button>
+                  </div>
                   <p className="text-sm text-muted-foreground">{new Date(w.date).toLocaleDateString()}</p>
                 </div>
                 {w.durationMinutes && (
@@ -133,6 +201,15 @@ export default function WorkoutsPage() {
                   </span>
                 )}
               </div>
+              {w.sets && w.sets.length > 0 && (
+                <div className="mt-3 flex flex-wrap gap-2">
+                  {w.sets.map((s) => (
+                    <span key={s.set} className="rounded-md bg-emerald-500/10 px-2.5 py-1 text-xs text-emerald-300">
+                      Set {s.set}: {s.reps} reps {s.weight > 0 && `× ${s.weight}kg`}
+                    </span>
+                  ))}
+                </div>
+              )}
               {w.notes && <p className="mt-2 text-sm text-muted-foreground">{w.notes}</p>}
             </GlassCard>
           ))}
