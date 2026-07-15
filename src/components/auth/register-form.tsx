@@ -6,7 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Eye, EyeOff, Loader2 } from "lucide-react";
+import { Eye, EyeOff, Loader2, AlertTriangle } from "lucide-react";
 import { registerSchema, type RegisterInput } from "@/lib/validations/auth";
 import { toast } from "sonner";
 
@@ -14,6 +14,7 @@ export function RegisterForm() {
   const { data: session, status } = useSession();
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [existingEmail, setExistingEmail] = useState<string | null>(null);
   const router = useRouter();
 
   useEffect(() => {
@@ -46,7 +47,12 @@ export function RegisterForm() {
 
       if (!res.ok) {
         const error = await res.json();
-        toast.error(error.message || "Registration failed");
+        if (error.message?.includes("already exists")) {
+          setExistingEmail(data.email);
+          toast.error("That email is already registered.");
+        } else {
+          toast.error(error.message || "Registration failed");
+        }
         return;
       }
 
@@ -203,6 +209,26 @@ export function RegisterForm() {
           Create Account
         </button>
       </form>
+
+      {existingEmail && (
+        <div className="rounded-xl border border-amber-500/20 bg-amber-500/10 p-4">
+          <div className="flex items-start gap-3">
+            <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-amber-400" />
+            <div className="space-y-1">
+              <p className="text-sm font-medium text-amber-300">Account already exists</p>
+              <p className="text-xs text-muted-foreground">
+                An account with <strong>{existingEmail}</strong> is already registered. Please sign in instead.
+              </p>
+              <Link
+                href="/login"
+                className="mt-2 inline-flex items-center gap-1 rounded-lg bg-emerald-500 px-3 py-1.5 text-xs font-medium text-white hover:bg-emerald-600"
+              >
+                Go to Sign In
+              </Link>
+            </div>
+          </div>
+        </div>
+      )}
 
       <p className="text-center text-sm text-muted-foreground">
         Already have an account?{" "}

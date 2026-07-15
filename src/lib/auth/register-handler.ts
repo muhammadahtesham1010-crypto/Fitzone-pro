@@ -27,7 +27,11 @@ export async function registerUser({
         .where(eq(users.id, existing.id));
       return { id: existing.id, email: existing.email, name: existing.name || name };
     }
-    throw new Error("User already exists with this email");
+    const isValid = await bcrypt.compare(password, existing.password);
+    if (isValid) {
+      return { id: existing.id, email: existing.email, name: existing.name };
+    }
+    throw new Error("An account with this email already exists. Please sign in.");
   }
 
   const hashedPassword = await bcrypt.hash(password, 12);
