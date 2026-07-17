@@ -59,7 +59,7 @@ export function DashboardSidebar({ open, onClose }: DashboardSidebarProps) {
       )}
       <aside
         className={cn(
-          "fixed inset-y-0 left-0 z-50 flex w-64 flex-col border-r border-emerald-500/10 bg-card transition-transform duration-300 lg:static lg:translate-x-0",
+          "fixed inset-y-0 left-0 z-50 flex w-64 flex-col border-r border-emerald-500/10 bg-background/80 backdrop-blur-xl transition-transform duration-300 lg:static lg:translate-x-0",
           open ? "translate-x-0" : "-translate-x-full"
         )}
       >
